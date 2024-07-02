@@ -1,0 +1,91 @@
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_DB: ecommerce
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  
+      - ./insert.sql:/docker-entrypoint-initdb.d/insert.sql 
+      - ./pg_hba.conf:/etc/postgresql/pg_hba.conf
+    networks:
+      - ecommerce-network
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - ecommerce-network
+
+  kafka:
+      image: confluentinc/cp-kafka:latest
+      container_name: kafka
+      depends_on:
+        - zookeeper
+      ports:
+        - "9092:9092"
+      environment:
+        KAFKA_BROKER_ID: 1
+        KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+        KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+        KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+        KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+        KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+        KAFKA_LOG_RETENTION_HOURS: 168
+        KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      networks:
+        - ecommerce-network
+
+
+  api_ecommerce:
+    container_name: ApiEcommerce
+    build:
+      context: ./ApiEcommerce  
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ecommerce
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_MAIL_HOST: smtp.gmail.com
+      SPRING_MAIL_PORT: 587
+      SPRING_MAIL_USERNAME: cuentapruebassmtp@gmail.com
+      SPRING_MAIL_PASSWORD: chpg qehb cbig efva
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: 'true'
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: 'true'
+      SERVER_PORT: 8080
+    depends_on:
+      - kafka
+      - postgres
+    networks:
+      - ecommerce-network
+
+  consumer_kafka:
+    container_name: consumer_kafka
+    build:
+      context: ./ConsumerKafka
+    depends_on:
+      - api_ecommerce
+      - kafka
+      - postgres
+    networks:
+      - ecommerce-network
+
+networks:
+  ecommerce-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
