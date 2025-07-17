@@ -1,4 +1,4 @@
-package com.ecommerce.ApiECommerce;
+package com.ecommerce;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

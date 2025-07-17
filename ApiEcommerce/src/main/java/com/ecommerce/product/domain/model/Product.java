@@ -1,4 +1,4 @@
-package com.ecommerce.Common.Model;
+package com.ecommerce.product.domain.model;
 
 import jakarta.persistence.*;
 import lombok.Data;

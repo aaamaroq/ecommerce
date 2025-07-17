@@ -1,31 +1,25 @@
-package com.ecommerce.ApiECommerce.Controller;
+package com.ecommerce.product.adapter.controller;
 
+
+import com.ecommerce.product.adapter.dto.ProductRequest;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ecommerce.Common.Model.ProductRequest;
-
-import org.springframework.web.bind.annotation.RequestMapping;
-
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+@Slf4j
 @RestController
 @RequestMapping("/product")
 public class ProductController {
-
-    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Autowired
     private KafkaTemplate<String, ProductRequest> kafkaTemplate;
@@ -42,22 +36,20 @@ public class ProductController {
         try {
             // Validar los parámetros aquí antes de crear el objeto ProductRequest
             ProductRequest productRequest = new ProductRequest(nombre, email, id);
-            
+
             // Log para conocer el producto
-            logger.info("Producto solicitado: {}", productRequest.toString());
+            log.info("Producto solicitado: {}", productRequest);
 
             kafkaTemplate.send(topic, productRequest);
-            
+
             // Log para confirmar envío a Kafka
-            logger.info("Mensaje enviado a Kafka para el producto: {}", productRequest.toString());
-            
+            log.info("Mensaje enviado a Kafka para el producto: {}", productRequest);
+
             return ResponseEntity.ok("Solicitud de producto enviada");
         } catch (Exception e) {
             // Manejo de excepciones
-            logger.error("Error al procesar la solicitud", e);
+            log.error("Error al procesar la solicitud", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al procesar la solicitud");
         }
     }
 }
-
-
