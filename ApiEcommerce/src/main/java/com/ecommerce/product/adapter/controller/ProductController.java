@@ -2,6 +2,9 @@ package com.ecommerce.product.adapter.controller;
 
 import com.ecommerce.product.adapter.dto.ProductRequest;
 import com.ecommerce.product.adapter.messaging.KafkaProductPublisher;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,6 +23,7 @@ import java.util.Locale;
 @Slf4j
 @RestController
 @RequestMapping("/product")
+@Tag(name = "Product API", description = "API for product operations")
 public class ProductController {
 
     private final KafkaProductPublisher kafkaProductPublisher;
@@ -32,12 +36,22 @@ public class ProductController {
     }
 
     @GetMapping("/getProduct")
+    @Operation(
+            summary = "Get a product",
+            description = "Retrieve a product by ID, name, and email. Sends a Kafka message with the product info."
+    )
     public ResponseEntity<String> getProduct(
+            @Parameter(description = "Unique identifier of the product", required = true)
             @RequestParam("id") @NotNull(message = "{error.id.required}") Long id,
-            @RequestParam("name") @NotBlank(message = "{error.name.required}") String name,
-            @RequestParam("email") @Email(message = "{error.email.invalid}") String email,
-            Locale locale) {
 
+            @Parameter(description = "Name of the product", required = true)
+            @RequestParam("name") @NotBlank(message = "{error.name.required}") String name,
+
+            @Parameter(description = "User email for confirmation", required = true)
+            @RequestParam("email") @Email(message = "{error.email.invalid}") String email,
+
+            Locale locale
+    ) {
         try {
             ProductRequest productRequest = new ProductRequest(name, email, id);
             log.info("Product requested: {}", productRequest);
