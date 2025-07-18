@@ -24,25 +24,25 @@ public class ProductController {
         this.kafkaProductPublisher = kafkaProductPublisher;
     }
 
-    @GetMapping("/getProducto")
-    public ResponseEntity<String> getProducto(
-            @RequestParam("id") @NotNull(message = "El ID no puede estar vacío") long id,
-            @RequestParam("nombre") @NotBlank(message = "El nombre no puede estar vacío") String nombre,
-            @RequestParam("email") @Email(message = "Email inválido") String email) {
+    @GetMapping("/getProduct")
+    public ResponseEntity<String> getProduct(
+            @RequestParam("id") @NotNull(message = "ID cannot be null") long id,
+            @RequestParam("name") @NotBlank(message = "Name cannot be blank") String name,
+            @RequestParam("email") @Email(message = "Invalid email") String email) {
 
         try {
-            ProductRequest productRequest = new ProductRequest(nombre, email, id);
+            ProductRequest productRequest = new ProductRequest(name, email, id);
 
-            log.info("Producto solicitado: {}", productRequest);
+            log.info("Product requested: {}", productRequest);
 
             kafkaProductPublisher.publishProductRequest(productRequest);
 
-            log.info("Mensaje enviado a Kafka para el producto: {}", productRequest);
+            log.info("Message sent to Kafka for product: {}", productRequest);
 
-            return ResponseEntity.ok("Solicitud de producto enviada");
+            return ResponseEntity.ok("Product request sent");
         } catch (Exception e) {
-            log.error("Error al procesar la solicitud", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al procesar la solicitud");
+            log.error("Error processing the request", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing the request");
         }
     }
 }

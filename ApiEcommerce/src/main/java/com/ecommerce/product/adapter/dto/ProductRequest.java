@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class ProductRequest {
 
-    private String nombre;
+    private String name;
     private String email;
     private Long productId;
 }
