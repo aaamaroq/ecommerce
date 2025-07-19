@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Locale;
 
 @Slf4j
+@Validated
 @RestController
 @RequestMapping("/product")
 @Tag(name = "Product API", description = "API for product operations")
@@ -41,6 +43,7 @@ public class ProductController {
             description = "Retrieve a product by ID, name, and email. Sends a Kafka message with the product info."
     )
     public ResponseEntity<String> getProduct(
+
             @Parameter(description = "Unique identifier of the product", required = true)
             @RequestParam("id") @NotNull(message = "{error.id.required}") Long id,
 
@@ -52,19 +55,14 @@ public class ProductController {
 
             Locale locale
     ) {
-        try {
-            ProductRequest productRequest = new ProductRequest(name, email, id);
-            log.info("Product requested: {}", productRequest);
 
-            kafkaProductPublisher.publishProductRequest(productRequest);
-            log.info("Message sent to Kafka for product: {}", productRequest);
+        ProductRequest productRequest = new ProductRequest(name, email, id);
+        log.info("Product requested: {}", productRequest);
 
-            String message = messageSource.getMessage("product.request.sent", null, locale);
-            return ResponseEntity.ok(message);
-        } catch (Exception e) {
-            log.error("Error processing the request", e);
-            String errorMessage = messageSource.getMessage("product.request.failed", null, locale);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-        }
+        kafkaProductPublisher.publishProductRequest(productRequest);
+        log.info("Message sent to Kafka for product: {}", productRequest);
+
+        String message = messageSource.getMessage("product.request.sent", null, locale);
+        return ResponseEntity.ok(message);
     }
 }
