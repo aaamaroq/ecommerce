@@ -1,4 +1,4 @@
-package com.ecommerce.config;
+package com.ecommerce.service.query.config;
 
 import com.ecommerce.product.adapter.dto.ProductRequest;
 import org.apache.kafka.clients.producer.ProducerConfig;

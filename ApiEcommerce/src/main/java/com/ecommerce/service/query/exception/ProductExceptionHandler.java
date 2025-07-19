@@ -1,4 +1,4 @@
-package com.ecommerce.exception;  // or com.ecommerce.exception
+package com.ecommerce.service.query.exception;  // or com.ecommerce.exception
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;

@@ -1,4 +1,4 @@
-package com.ecommerce.config;
+package com.ecommerce.service.query.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

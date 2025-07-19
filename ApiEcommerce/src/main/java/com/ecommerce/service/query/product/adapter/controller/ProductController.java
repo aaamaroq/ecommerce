@@ -1,7 +1,7 @@
-package com.ecommerce.product.adapter.controller;
+package com.ecommerce.service.query.product.adapter.controller;
 
-import com.ecommerce.product.adapter.dto.ProductRequest;
-import com.ecommerce.product.adapter.messaging.KafkaProductPublisher;
+import com.ecommerce.service.query.product.adapter.dto.ProductRequest;
+import com.ecommerce.service.query.product.adapter.messaging.KafkaProductPublisher;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
