@@ -1,9 +1,8 @@
-package com.ecommerce.Common.Repository;
+package com;
 
+import com.ecommerce.notification.product.domain.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import com.ecommerce.Common.Model.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {

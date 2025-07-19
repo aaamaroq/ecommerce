@@ -1,4 +1,4 @@
-package com.ecommerce.Consumer;
+package com.ecommerce;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,12 +13,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.mail.javamail.JavaMailSender;
 
 import com.ecommerce.Common.Model.ProductRequest;
-
-import org.springframework.mail.SimpleMailMessage;
-
 
 import java.util.Map;
 import java.util.Set;
@@ -26,7 +22,7 @@ import java.util.concurrent.ExecutionException;
 
 @SpringBootTest
 @EmbeddedKafka(partitions = 1, topics = { "product-requests" })
-public class ConsumerApplicationTests {
+public class ApiECommerceApplicationTests {
 
     @Autowired
     private DataSource dataSource;
@@ -36,12 +32,9 @@ public class ConsumerApplicationTests {
 
     @Autowired
     private KafkaTemplate<String, ProductRequest> kafkaTemplate;
-    
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private JavaMailSender javaMailSender;
+    private JdbcTemplate jdbcTemplate;
 
     @Test
     public void testDataSourceExists() {
@@ -73,28 +66,5 @@ public class ConsumerApplicationTests {
             Set<String> names = topics.names().get();
             assertThat(names).contains("product-requests");
         }
-    }
-
-    @Test
-    public void testSendEmail() {
-        String toEmail = "adrianamaroquero@gmail.com";
-        String subject = "Testing email functionality";
-        String body = "This is a test email.";
-
-        // Enviar el correo electrónico
-        try {
-            sendTestEmail(toEmail, subject, body);
-        } catch (Exception e) {
-            assertThat(false).as("Failed to send email: " + e.getMessage()).isTrue();
-        }
-    }
-
-    private void sendTestEmail(String toEmail, String subject, String body) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(toEmail);
-        message.setSubject(subject);
-        message.setText(body);
-
-        javaMailSender.send(message);
     }
 }

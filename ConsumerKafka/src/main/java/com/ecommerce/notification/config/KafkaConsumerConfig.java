@@ -1,5 +1,6 @@
-package com.ecommerce.Consumer;
+package com.ecommerce.notification.config;
 
+import com.ecommerce.notification.product.adapter.dto.ProductRequest;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
@@ -10,8 +11,6 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-
-import com.ecommerce.Common.Model.ProductRequest;
 
 import java.util.HashMap;
 import java.util.Map;
