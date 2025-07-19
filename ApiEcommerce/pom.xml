@@ -10,9 +10,9 @@
         <relativePath/>
     </parent>
     <groupId>com.ecommerce</groupId>
-    <artifactId>ApiECommerce</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>ApiEComerce</name>
+    <artifactId>ecommerce-service-query</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>ecommerce-service-query</name>
     <description>project for Spring Boot of E-Commerce</description>
     <properties>
         <java.version>17</java.version>
