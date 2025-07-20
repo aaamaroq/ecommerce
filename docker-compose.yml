@@ -1,7 +1,8 @@
+version: "3.8"
 
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:15
     container_name: postgres
     environment:
       POSTGRES_DB: ecommerce
@@ -14,9 +15,10 @@ services:
       - ./pg_hba.conf:/etc/postgresql/pg_hba.conf
     networks:
       - ecommerce-network
+    restart: unless-stopped
 
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+    image: confluentinc/cp-zookeeper:7.5.0
     container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
@@ -25,31 +27,32 @@ services:
       - "2181:2181"
     networks:
       - ecommerce-network
+    restart: unless-stopped
 
   kafka:
-      image: confluentinc/cp-kafka:latest
-      container_name: kafka
-      depends_on:
-        - zookeeper
-      ports:
-        - "9092:9092"
-      environment:
-        KAFKA_BROKER_ID: 1
-        KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-        KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-        KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-        KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-        KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-        KAFKA_LOG_RETENTION_HOURS: 168
-        KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-      networks:
-        - ecommerce-network
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    networks:
+      - ecommerce-network
+    restart: unless-stopped
 
-
-  api_ecommerce:
-    container_name: ApiEcommerce
+  ecommerce-service-query:
+    container_name: ecommerce-service-query
     build:
-      context: ./ApiEcommerce  
+      context: ./ecommerce-service-query  
     ports:
       - "8080:8080"
     environment:
@@ -66,20 +69,35 @@ services:
       SERVER_PORT: 8080
     depends_on:
       - kafka
-      - postgres
     networks:
       - ecommerce-network
+    restart: unless-stopped
 
-  consumer_kafka:
-    container_name: consumer_kafka
+  ecommerce-service-notification:
+    container_name: ecommerce-service-notification
     build:
-      context: ./ConsumerKafka
+      context: ./ecommerce-service-notification
     depends_on:
-      - api_ecommerce
       - kafka
       - postgres
     networks:
       - ecommerce-network
+    restart: unless-stopped
+
+  sonarqube:
+    image: sonarqube:community:10.5.1
+    container_name: sonarqube
+    ports:
+      - "9000:9000"
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_extensions:/opt/sonarqube/extensions
+    networks:
+      - ecommerce-network
+    restart: unless-stopped
 
 networks:
   ecommerce-network:
@@ -87,3 +105,6 @@ networks:
 
 volumes:
   postgres_data:
+  sonarqube_data:
+  sonarqube_logs:
+  sonarqube_extensions:
