@@ -1,10 +1,10 @@
-package com.ecommerce.notification.product.application;
+package com.ecommerce.service.notification.product.application;
 
-import com.ProductRepository;
-import com.ecommerce.notification.product.adapter.mapper.ProductMapper;
-import com.ecommerce.notification.product.adapter.dto.ProductResponse;
-import com.ecommerce.notification.product.domain.model.Product;
-import com.ecommerce.notification.product.exception.ProductNotFoundException;
+import com.ecommerce.service.notification.product.domain.repository.ProductRepository;
+import com.ecommerce.service.notification.product.adapter.mapper.ProductMapper;
+import com.ecommerce.service.notification.product.adapter.dto.ProductResponse;
+import com.ecommerce.service.notification.product.domain.model.Product;
+import com.ecommerce.service.notification.product.adapter.exception.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

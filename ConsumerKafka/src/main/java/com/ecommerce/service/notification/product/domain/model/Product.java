@@ -1,4 +1,4 @@
-package com.ecommerce.notification.product.domain.model;
+package com.ecommerce.service.notification.product.domain.model;
 
 import jakarta.persistence.*;
 import lombok.Data;

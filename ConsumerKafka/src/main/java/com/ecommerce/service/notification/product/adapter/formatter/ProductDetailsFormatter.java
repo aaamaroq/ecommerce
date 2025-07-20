@@ -1,15 +1,12 @@
-package com.ecommerce.notification.product.adapter.formatter;
+package com.ecommerce.service.notification.product.adapter.formatter;
 
-import com.ecommerce.notification.product.adapter.dto.ProductResponse;
+import com.ecommerce.service.notification.product.adapter.dto.ProductResponse;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProductDetailsFormatter {
 
     public String format(ProductResponse product) {
-        if (product == null) {
-            return "Product not found.";
-        }
         return "Product details:\n" +
                 "Name: " + product.getName() + "\n" +
                 "Price: " + product.getPrice() + "$\n" +

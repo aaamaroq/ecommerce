@@ -1,4 +1,4 @@
-package com;
+package com.ecommerce.service.notification.product.domain.repository;
 
 import com.ecommerce.service.notification.product.domain.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;

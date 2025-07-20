@@ -1,7 +1,7 @@
-package com.ecommerce.notification.product.adapter.mapper;
+package com.ecommerce.service.notification.product.adapter.mapper;
 
-import com.ecommerce.notification.product.adapter.dto.ProductResponse;
-import com.ecommerce.notification.product.domain.model.Product;
+import com.ecommerce.service.notification.product.adapter.dto.ProductResponse;
+import com.ecommerce.service.notification.product.domain.model.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

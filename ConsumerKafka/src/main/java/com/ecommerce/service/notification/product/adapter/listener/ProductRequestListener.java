@@ -1,11 +1,11 @@
-package com.ecommerce.notification.product.adapter.listener;
+package com.ecommerce.service.notification.product.adapter.listener;
 
-import com.ecommerce.notification.product.adapter.formatter.ProductDetailsFormatter;
-import com.ecommerce.notification.product.adapter.EmailNotifier;
-import com.ecommerce.notification.product.adapter.dto.ProductRequest;
-import com.ecommerce.notification.product.adapter.dto.ProductResponse;
-import com.ecommerce.notification.product.application.ProductService;
-import com.ecommerce.notification.product.exception.ProductNotFoundException;
+import com.ecommerce.service.notification.product.adapter.formatter.ProductDetailsFormatter;
+import com.ecommerce.service.notification.product.infrastructure.EmailNotifier;
+import com.ecommerce.service.notification.product.adapter.dto.ProductRequest;
+import com.ecommerce.service.notification.product.adapter.dto.ProductResponse;
+import com.ecommerce.service.notification.product.application.ProductService;
+import com.ecommerce.service.notification.product.adapter.exception.ProductNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -27,11 +27,18 @@ public class ProductRequestListener {
     }
 
     @KafkaListener(topics = "${spring.kafka.topic.request-info}", groupId = "${spring.kafka.consumer.group-id}")
-    public void consume(ProductRequest productRequest) throws ProductNotFoundException {
+    public void consume(ProductRequest productRequest) {
         log.info("Received product request: {}", productRequest);
 
+        String productResponseFormatted;
+
+        try{
         ProductResponse productResponse = productService.getProductResponseById(productRequest.getProductId());
-        String productResponseFormatted = productDetailsFormatter.format(productResponse);
+        productResponseFormatted = productDetailsFormatter.format(productResponse);
+        } catch (ProductNotFoundException ex){
+            productResponseFormatted = "Product not found.";
+        }
+
         emailNotifier.send(productRequest.getEmail(), "Details of the requested product", productResponseFormatted);
     }
 }

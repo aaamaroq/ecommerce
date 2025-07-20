@@ -1,6 +1,6 @@
-package com.ecommerce.notification.config;
+package com.ecommerce.service.notification.config;
 
-import com.ecommerce.notification.product.adapter.dto.ProductRequest;
+import com.ecommerce.service.notification.product.adapter.dto.ProductRequest;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;

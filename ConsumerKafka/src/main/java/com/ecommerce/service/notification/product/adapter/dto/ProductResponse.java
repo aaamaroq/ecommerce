@@ -1,4 +1,4 @@
-package com.ecommerce.notification.product.adapter.dto;
+package com.ecommerce.service.notification.product.adapter.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
