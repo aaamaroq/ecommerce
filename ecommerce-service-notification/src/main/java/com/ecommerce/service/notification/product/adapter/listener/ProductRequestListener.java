@@ -64,14 +64,11 @@ public class ProductRequestListener {
     private Locale resolveLocale(String language) {
         Set<String> supportedLanguages = Set.of("en", "es", "de");
 
-        if (language != null && supportedLanguages.contains(language)) {
+        if (supportedLanguages.contains(language)) {
             return Locale.forLanguageTag(language);
         }
 
-        if (language != null) {
-            log.warn("Unsupported language '{}'. Falling back to English.", language);
-        }
-
+        log.warn("Unsupported language '{}'. Falling back to English.", language);
         return Locale.ENGLISH;
     }
 }
