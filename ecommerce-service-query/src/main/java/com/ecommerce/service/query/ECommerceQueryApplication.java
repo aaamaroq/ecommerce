@@ -8,6 +8,6 @@ public class ECommerceQueryApplication {
 
     public static void main(String[] args)
     {
-        SpringApplication.run(ApiECommerceApplication.class, args);
+        SpringApplication.run(ECommerceQueryApplication.class, args);
     }
 }

@@ -1,4 +1,4 @@
-package com.ecommerce.notification.product.adapter;
+package com.ecommerce.notification.product.adapter.mapper;
 
 import com.ecommerce.notification.product.adapter.dto.ProductResponse;
 import com.ecommerce.notification.product.domain.model.Product;

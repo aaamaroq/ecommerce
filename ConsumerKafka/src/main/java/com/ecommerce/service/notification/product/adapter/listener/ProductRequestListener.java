@@ -1,9 +1,9 @@
-package com.ecommerce.notification.product.adapter;
+package com.ecommerce.notification.product.adapter.listener;
 
-import com.ecommerce.notification.product.ProductDetailsFormatter;
+import com.ecommerce.notification.product.adapter.formatter.ProductDetailsFormatter;
+import com.ecommerce.notification.product.adapter.EmailNotifier;
 import com.ecommerce.notification.product.adapter.dto.ProductRequest;
 import com.ecommerce.notification.product.adapter.dto.ProductResponse;
-import com.ecommerce.notification.product.domain.model.Product;
 import com.ecommerce.notification.product.application.ProductService;
 import com.ecommerce.notification.product.exception.ProductNotFoundException;
 import lombok.extern.slf4j.Slf4j;

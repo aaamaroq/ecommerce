@@ -1,4 +1,4 @@
-package com.ecommerce.notification.product.adapter;
+package com.ecommerce.service.notification;
 
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;

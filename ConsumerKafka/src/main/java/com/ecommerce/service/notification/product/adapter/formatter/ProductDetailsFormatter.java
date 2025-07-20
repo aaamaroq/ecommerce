@@ -1,7 +1,6 @@
-package com.ecommerce.notification.product;
+package com.ecommerce.notification.product.adapter.formatter;
 
 import com.ecommerce.notification.product.adapter.dto.ProductResponse;
-import com.ecommerce.notification.product.domain.model.Product;
 import org.springframework.stereotype.Component;
 
 @Component

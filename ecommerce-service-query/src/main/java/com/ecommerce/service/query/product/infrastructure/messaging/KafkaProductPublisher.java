@@ -1,4 +1,4 @@
-package com.ecommerce.service.query.product.adapter.messaging;
+package com.ecommerce.service.query.product.infrastructure.messaging;
 
 import com.ecommerce.service.query.product.adapter.dto.ProductRequest;
 import org.springframework.beans.factory.annotation.Value;

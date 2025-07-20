@@ -1,7 +1,7 @@
 package com.ecommerce.service.query.product.adapter.controller;
 
 import com.ecommerce.service.query.product.adapter.dto.ProductRequest;
-import com.ecommerce.service.query.product.adapter.messaging.KafkaProductPublisher;
+import com.ecommerce.service.query.product.infrastructure.messaging.KafkaProductPublisher;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,7 +11,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;

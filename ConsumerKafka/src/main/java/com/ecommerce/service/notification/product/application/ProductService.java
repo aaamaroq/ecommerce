@@ -1,7 +1,7 @@
 package com.ecommerce.notification.product.application;
 
 import com.ProductRepository;
-import com.ecommerce.notification.product.adapter.ProductMapper;
+import com.ecommerce.notification.product.adapter.mapper.ProductMapper;
 import com.ecommerce.notification.product.adapter.dto.ProductResponse;
 import com.ecommerce.notification.product.domain.model.Product;
 import com.ecommerce.notification.product.exception.ProductNotFoundException;

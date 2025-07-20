@@ -1,6 +1,6 @@
 package com;
 
-import com.ecommerce.notification.product.domain.model.Product;
+import com.ecommerce.service.notification.product.domain.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
