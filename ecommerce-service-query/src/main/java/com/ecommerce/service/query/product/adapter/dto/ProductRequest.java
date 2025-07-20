@@ -10,4 +10,5 @@ public class ProductRequest {
     private String name;
     private String email;
     private Long productId;
+    private String language;
 }

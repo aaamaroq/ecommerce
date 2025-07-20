@@ -23,7 +23,7 @@ import java.util.Locale;
 @Slf4j
 @Validated
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/service/query")
 @Tag(name = "Product API", description = "API for product operations")
 public class ProductController {
 
@@ -36,7 +36,7 @@ public class ProductController {
         this.messageSource = messageSource;
     }
 
-    @GetMapping("/getProduct")
+    @GetMapping("/product")
     @Operation(
             summary = "Get a product",
             description = "Retrieve a product by ID, name, and email. Sends a Kafka message with the product info."
@@ -55,7 +55,7 @@ public class ProductController {
             Locale locale
     ) {
 
-        ProductRequest productRequest = new ProductRequest(name, email, id);
+        ProductRequest productRequest = new ProductRequest(name, email, id, locale.toLanguageTag());
         log.info("Product requested: {}", productRequest);
 
         kafkaProductPublisher.publishProductRequest(productRequest);
