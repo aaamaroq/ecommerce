@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   postgres:
     image: postgres:15
@@ -52,7 +50,7 @@ services:
   ecommerce-service-query:
     container_name: ecommerce-service-query
     build:
-      context: ./ecommerce-service-query  
+      context: ./ecommerce-service-query
     ports:
       - "8080:8080"
     environment:
@@ -64,8 +62,8 @@ services:
       SPRING_MAIL_PORT: 587
       SPRING_MAIL_USERNAME: cuentapruebassmtp@gmail.com
       SPRING_MAIL_PASSWORD: chpg qehb cbig efva
-      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: 'true'
-      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: 'true'
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: "true"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: "true"
       SERVER_PORT: 8080
     depends_on:
       - kafka
@@ -85,7 +83,7 @@ services:
     restart: unless-stopped
 
   sonarqube:
-    image: sonarqube:community:10.5.1
+    image: sonarqube:10.5.1-community
     container_name: sonarqube
     ports:
       - "9000:9000"

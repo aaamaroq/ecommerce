@@ -89,7 +89,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.ecommerce.ApiECommerceApplication</mainClass>
+                    <mainClass>com.ecommerce.service.query.ECommerceQueryApplication</mainClass>
                 </configuration>
 
                 <executions>

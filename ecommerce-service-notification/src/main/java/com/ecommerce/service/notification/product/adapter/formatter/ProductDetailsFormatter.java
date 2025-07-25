@@ -34,7 +34,8 @@ public class ProductDetailsFormatter {
                 "    <td style='padding: 8px; border: 1px solid #ddd;'>" + product.getPrice() + " $</td>" +
                 "  </tr>" +
                 "  <tr style='background-color: #f4f4f4;'>" +
-                "    <th style='padding: 8px; border: 1px solid #ddd; text-align: left;'>" + descriptionLabel + "</th>" +
+                "    <th style='padding: 8px; border: 1px solid #ddd; text-align: left;'>" + descriptionLabel + "</th>"
+                +
                 "    <td style='padding: 8px; border: 1px solid #ddd;'>" + product.getDescription() + "</td>" +
                 "  </tr>" +
                 "  <tr>" +
