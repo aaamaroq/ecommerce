@@ -1,6 +1,6 @@
 package com.ecommerce.service.notification.product.adapter.formatter;
 
-import com.ecommerce.service.notification.product.adapter.dto.ProductResponse;
+import com.ecommerce.service.notification.product.adapter.dto.ProductResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ public class ProductDetailsFormatter {
 
     private final MessageSource messageSource;
 
-    public String format(ProductResponse product, Locale locale) {
+    public String format(ProductResponseDTO product, Locale locale) {
         String title = messageSource.getMessage("email.product.details", null, locale);
         String nameLabel = messageSource.getMessage("email.product.name", null, locale);
         String priceLabel = messageSource.getMessage("email.product.price", null, locale);

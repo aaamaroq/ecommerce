@@ -1,6 +1,6 @@
 package com.ecommerce.service.notification.product.adapter.dto.validation;
 
-import com.ecommerce.service.notification.product.adapter.dto.ProductRequest;
+import com.ecommerce.service.notification.product.adapter.dto.ProductKafkaDTO;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +16,12 @@ public class ProductRequestValidator {
 
     private final Validator validator;
 
-    public boolean isValid(ProductRequest request) {
-        Set<ConstraintViolation<ProductRequest>> violations = validator.validate(request);
+    public boolean isValid(ProductKafkaDTO request) {
+        Set<ConstraintViolation<ProductKafkaDTO>> violations = validator.validate(request);
 
         if (!violations.isEmpty()) {
             log.warn("Validation failed for ProductRequest:");
-            for (ConstraintViolation<ProductRequest> violation : violations) {
+            for (ConstraintViolation<ProductKafkaDTO> violation : violations) {
                 log.warn(" - {}: {}", violation.getPropertyPath(), violation.getMessage());
             }
             return false;

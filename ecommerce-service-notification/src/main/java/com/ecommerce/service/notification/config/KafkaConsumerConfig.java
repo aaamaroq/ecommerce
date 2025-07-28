@@ -1,6 +1,6 @@
 package com.ecommerce.service.notification.config;
 
-import com.ecommerce.service.notification.product.adapter.dto.ProductRequest;
+import com.ecommerce.service.notification.product.adapter.dto.ProductKafkaDTO;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class KafkaConsumerConfig {
 
     @Bean
-    public ConsumerFactory<String, ProductRequest> consumerFactory() {
+    public ConsumerFactory<String, ProductKafkaDTO> consumerFactory() {
         Map<String, Object> config = new HashMap<>();
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
         config.put(ConsumerConfig.GROUP_ID_CONFIG, "product-requests");
@@ -28,12 +28,12 @@ public class KafkaConsumerConfig {
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
         config.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName());
         config.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-        return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(), new JsonDeserializer<>(ProductRequest.class));
+        return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(), new JsonDeserializer<>(ProductKafkaDTO.class));
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, ProductRequest> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, ProductRequest> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, ProductKafkaDTO> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, ProductKafkaDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }

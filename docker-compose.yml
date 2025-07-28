@@ -47,10 +47,11 @@ services:
       - ecommerce-network
     restart: unless-stopped
 
-  ecommerce-service-query:
-    container_name: ecommerce-service-query
+  ecommerce-api-service:
+    container_name: ecommerce-api-service
     build:
-      context: ./ecommerce-service-query
+      context: ecommerce-api-service
+    image: mycompany/ecommerce-api-service:latest  
     ports:
       - "8080:8080"
     environment:
@@ -75,6 +76,7 @@ services:
     container_name: ecommerce-service-notification
     build:
       context: ./ecommerce-service-notification
+    image: mycompany/ecommerce-service-notification:latest  
     depends_on:
       - kafka
       - postgres
