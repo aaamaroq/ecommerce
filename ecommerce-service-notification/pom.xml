@@ -94,7 +94,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.ecommerce.service.notification.ECommerceNotificationApplication</mainClass>
+					<mainClass>com.ecommerce.service.ECommerceNotificationApplication</mainClass>
 				</configuration>
 
 				<executions>

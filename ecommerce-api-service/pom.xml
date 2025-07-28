@@ -80,7 +80,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.ecommerce.service.api.ECommerceApiApplication</mainClass>
+                    <mainClass>com.ecommerce.service.ECommerceApiApplication</mainClass>
                 </configuration>
 
                 <executions>
