@@ -1,3 +1,5 @@
+version: '3.9'
+
 services:
   postgres:
     image: postgres:15
@@ -13,6 +15,7 @@ services:
       - ./pg_hba.conf:/etc/postgresql/pg_hba.conf
     networks:
       - ecommerce-network
+    mem_limit: 256m
     restart: unless-stopped
 
   zookeeper:
@@ -25,6 +28,7 @@ services:
       - "2181:2181"
     networks:
       - ecommerce-network
+    mem_limit: 128m
     restart: unless-stopped
 
   kafka:
@@ -45,6 +49,7 @@ services:
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
     networks:
       - ecommerce-network
+    mem_limit: 512m
     restart: unless-stopped
 
   ecommerce-api-service:
@@ -70,6 +75,7 @@ services:
       - kafka
     networks:
       - ecommerce-network
+    mem_limit: 256m
     restart: unless-stopped
 
   ecommerce-service-notification:
@@ -82,6 +88,7 @@ services:
       - postgres
     networks:
       - ecommerce-network
+    mem_limit: 128m
     restart: unless-stopped
 
   sonarqube:
@@ -97,6 +104,7 @@ services:
       - sonarqube_extensions:/opt/sonarqube/extensions
     networks:
       - ecommerce-network
+    mem_limit: 1536m
     restart: unless-stopped
 
 networks:

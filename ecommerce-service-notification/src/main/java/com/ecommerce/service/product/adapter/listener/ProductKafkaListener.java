@@ -19,7 +19,7 @@ import java.util.Set;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ProductKafkaDTOListener {
+public class ProductKafkaListener {
 
     private final ProductService productService;
     private final ProductDetailsFormatter productDetailsFormatter;
