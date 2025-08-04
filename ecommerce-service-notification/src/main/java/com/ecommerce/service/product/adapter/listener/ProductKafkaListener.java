@@ -48,7 +48,8 @@ public class ProductKafkaListener {
 
         } catch (ProductNotFoundException ex) {
             log.warn("Product not found for ID: {}", productKafkaDTO.getProductId(), ex);
-            productResponseFormatted = messageSource.getMessage("product.not.found", null, locale);
+            String notFoundMessage = messageSource.getMessage("product.not.found", null, locale);
+            productResponseFormatted = productDetailsFormatter.formatProductNotFound(notFoundMessage);
         }
 
         try {

@@ -50,4 +50,13 @@ public class ProductDetailsFormatter {
                 "</body>" +
                 "</html>";
     }
+
+    public String formatProductNotFound(String notFoundMessage) {
+        return "<html>" +
+                "<body style='font-family: Arial, sans-serif; color: #333;'>" +
+                "<h2 style='color: #e22a2a;'>" + notFoundMessage + "</h2>" +
+                "</body>" +
+                "</html>";
+    }
+
 }
