@@ -78,11 +78,11 @@ services:
     mem_limit: 256m
     restart: unless-stopped
 
-  ecommerce-service-notification:
-    container_name: ecommerce-service-notification
+  ecommerce-notification-service:
+    container_name: ecommerce-notification-service
     build:
-      context: ./ecommerce-service-notification
-    image: mycompany/ecommerce-service-notification:latest  
+      context: ./ecommerce-notification-service
+    image: mycompany/ecommerce-notification-service:latest
     depends_on:
       - kafka
       - postgres

@@ -10,9 +10,9 @@
 		<relativePath />
 	</parent>
 	<groupId>com.ecommerce</groupId>
-	<artifactId>ecommerce-service-notification</artifactId>
+	<artifactId>ecommerce-notification-service</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>ecommerce-service-notification</name>
+	<name>ecommerce-notification-service</name>
 	<description> project for Spring Boot of E-Commerce</description>
 	<properties>
 		<java.version>17</java.version>

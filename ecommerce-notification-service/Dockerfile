@@ -5,8 +5,8 @@ FROM openjdk:17-jdk-alpine
 WORKDIR /app
 
 # Copia el archivo JAR construido de tu aplicación al contenedor
-COPY target/ecommerce-service-notification-1.0.0-SNAPSHOT.jar ecommerce-service-notification.jar
+COPY target/ecommerce-notification-service-1.0.0-SNAPSHOT.jar ecommerce-notification-service.jar
 
 # Comando para ejecutar la aplicación Spring Boot cuando el contenedor se inicie
-CMD ["java", "-jar", "ecommerce-service-notification.jar"]
+CMD ["java", "-jar", "ecommerce-notification-service.jar"]
 
