@@ -1,7 +1,9 @@
 package com.ecommerce.service.product.adapter.listener;
 
-import com.ecommerce.service.product.adapter.dto.validation.ProductKafkaDTOValidator;
+import com.ecommerce.service.product.adapter.dto.ProductKafkaCreateDTO;
+import com.ecommerce.service.product.adapter.dto.validation.GenericValidator;
 import com.ecommerce.service.product.adapter.formatter.ProductDetailsFormatter;
+import com.ecommerce.service.product.adapter.mapper.ProductMapper;
 import com.ecommerce.service.product.infrastructure.EmailNotifier;
 import com.ecommerce.service.product.adapter.dto.ProductKafkaDTO;
 import com.ecommerce.service.product.adapter.dto.ProductResponseDTO;
@@ -24,12 +26,17 @@ public class ProductKafkaListener {
     private final ProductService productService;
     private final ProductDetailsFormatter productDetailsFormatter;
     private final EmailNotifier emailNotifier;
-    private final ProductKafkaDTOValidator productKafkaDTOValidator;
+    private final GenericValidator<ProductKafkaDTO> productKafkaDTOValidator;
+    private final GenericValidator<ProductKafkaCreateDTO> productKafkaCreateDTOValidator;
     private final MessageSource messageSource;
 
 
-    @KafkaListener(topics = "${spring.kafka.topic.request-info}", groupId = "${spring.kafka.consumer.group-id}")
-    public void consume(ProductKafkaDTO productKafkaDTO) {
+
+    @KafkaListener(
+            topics = "${spring.kafka.topic.request-info}",
+            containerFactory = "productKafkaDTOKafkaListenerContainerFactory"
+    )
+    public void consumeGetProduct(ProductKafkaDTO productKafkaDTO) {
 
         if (!productKafkaDTOValidator.isValid(productKafkaDTO)) {
             log.warn("Invalid ProductKafkaDTO received. Skipping processing.");
@@ -61,6 +68,31 @@ public class ProductKafkaListener {
         }
 
     }
+
+    @KafkaListener(
+            topics = "${spring.kafka.topic.product-create}",
+            containerFactory = "productKafkaCreateDTOKafkaListenerContainerFactory"
+    )
+    public void consumeCreateProduct(ProductKafkaCreateDTO productKafkaCreateDTO) {
+
+        if (!productKafkaCreateDTOValidator.isValid(productKafkaCreateDTO)) {
+            log.warn("Invalid ProductKafkaCreateDTO received. Skipping processing.");
+            return;
+        }
+
+        log.info("Received product create request: {}", productKafkaCreateDTO);
+
+        try {
+            productService.saveProduct(productKafkaCreateDTO);
+
+            log.info("Product saved successfully: {}", productKafkaCreateDTO.getName());
+
+        } catch (Exception ex) {
+            log.error("Error saving product: {} - {}", productKafkaCreateDTO.getName(), ex.getMessage(), ex);
+        }
+    }
+
+
 
     private Locale resolveLocale(String language) {
         Set<String> supportedLanguages = Set.of("en", "es", "de");

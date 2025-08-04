@@ -1,6 +1,6 @@
 package com.ecommerce.service.config;
 
-
+import com.ecommerce.service.product.adapter.dto.ProductKafkaCreateDTO;
 import com.ecommerce.service.product.adapter.dto.ProductKafkaDTO;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -22,16 +22,33 @@ public class KafkaProducerConfig {
     private String bootstrapServers;
 
     @Bean
-    public ProducerFactory<String, ProductKafkaDTO> producerFactory() {
+    public ProducerFactory<String, ProductKafkaDTO> productRequestProducerFactory() {
+        Map<String, Object> configProps = baseProducerConfigs();
+        return new DefaultKafkaProducerFactory<>(configProps);
+    }
+
+    @Bean(name = "productRequestKafkaTemplate")
+    public KafkaTemplate<String, ProductKafkaDTO> productRequestKafkaTemplate() {
+        return new KafkaTemplate<>(productRequestProducerFactory());
+    }
+
+    @Bean
+    public ProducerFactory<String, ProductKafkaCreateDTO> productCreateProducerFactory() {
+        Map<String, Object> configProps = baseProducerConfigs();
+        return new DefaultKafkaProducerFactory<>(configProps);
+    }
+
+    @Bean(name = "productCreateKafkaTemplate")
+    public KafkaTemplate<String, ProductKafkaCreateDTO> productCreateKafkaTemplate() {
+        return new KafkaTemplate<>(productCreateProducerFactory());
+    }
+
+
+    private Map<String, Object> baseProducerConfigs() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        return new DefaultKafkaProducerFactory<>(configProps);
-    }
-
-    @Bean
-    public KafkaTemplate<String, ProductKafkaDTO> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
+        return configProps;
     }
 }

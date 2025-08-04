@@ -1,6 +1,8 @@
 package com.ecommerce.service.product.adapter.controller;
 
 import com.ecommerce.service.product.adapter.dto.ProductKafkaDTO;
+import com.ecommerce.service.product.adapter.dto.ProductCreateRequestDTO;
+import com.ecommerce.service.product.adapter.dto.ProductKafkaCreateDTO;
 import com.ecommerce.service.product.adapter.dto.ProductRequestDTO;
 import com.ecommerce.service.product.infrastructure.messaging.KafkaProductPublisher;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,7 +51,7 @@ public class ProductController {
                 locale.toLanguageTag()
         );
 
-        log.info("Product requested: {}", productKafkaDTO);
+        log.info("Product requested: {}", productRequestDTO);
 
         kafkaProductPublisher.publishProductRequest(productKafkaDTO);
         log.info("Message sent to Kafka for product: {}", productKafkaDTO);
@@ -61,4 +63,37 @@ public class ProductController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @PostMapping("/product")
+    @Operation(
+            summary = "Add a product",
+            description = "Add a new product and send a Kafka message to the create product topic."
+    )
+    public ResponseEntity<Map<String, String>> addProduct(
+            @Valid @RequestBody ProductCreateRequestDTO productCreateRequestDTO,
+            Locale locale
+    ) {
+
+
+        log.info("Product requested for create: {}", productCreateRequestDTO);
+
+        ProductKafkaCreateDTO productKafkaCreateDTO = new ProductKafkaCreateDTO(
+                productCreateRequestDTO.getName(),
+                productCreateRequestDTO.getPrice(),
+                productCreateRequestDTO.getDescription(),
+                productCreateRequestDTO.getQuantity(),
+                productCreateRequestDTO.getRating()
+        );
+
+        kafkaProductPublisher.publishProductCreate(productKafkaCreateDTO);
+        log.info("Message sent to Kafka for create product: {}", productKafkaCreateDTO);
+
+        String message = messageSource.getMessage("product.create.sent", null, locale);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", message);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
 }

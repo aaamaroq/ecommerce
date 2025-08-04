@@ -1,6 +1,5 @@
 package com.ecommerce.service.product.adapter.dto.validation;
 
-import com.ecommerce.service.product.adapter.dto.ProductKafkaDTO;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
@@ -12,16 +11,16 @@ import java.util.Set;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ProductKafkaDTOValidator {
+public class GenericValidator<T> {
 
     private final Validator validator;
 
-    public boolean isValid(ProductKafkaDTO request) {
-        Set<ConstraintViolation<ProductKafkaDTO>> violations = validator.validate(request);
+    public boolean isValid(T dto) {
+        Set<ConstraintViolation<T>> violations = validator.validate(dto);
 
         if (!violations.isEmpty()) {
-            log.warn("Validation failed for ProductKafkaDTO:");
-            for (ConstraintViolation<ProductKafkaDTO> violation : violations) {
+            log.warn("Validation failed for {}:", dto.getClass().getSimpleName());
+            for (ConstraintViolation<T> violation : violations) {
                 log.warn(" - {}: {}", violation.getPropertyPath(), violation.getMessage());
             }
             return false;

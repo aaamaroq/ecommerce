@@ -1,5 +1,6 @@
 package com.ecommerce.service.product.application;
 
+import com.ecommerce.service.product.adapter.dto.ProductKafkaCreateDTO;
 import com.ecommerce.service.product.domain.repository.ProductRepository;
 import com.ecommerce.service.product.adapter.mapper.ProductMapper;
 import com.ecommerce.service.product.adapter.dto.ProductResponseDTO;
@@ -17,7 +18,7 @@ public class ProductService {
     private ProductRepository productRepository;
 
     @Autowired
-    private ProductMapper productMapper; // Mapper inyectado (MapStruct o manual)
+    private ProductMapper productMapper;
 
     private Optional<Product> findProductById(Long id) {
         return productRepository.findById(id);
@@ -27,6 +28,11 @@ public class ProductService {
         Product product = findProductById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product with id " + id + " not found"));
         return productMapper.toResponse(product);
+    }
+
+    public void saveProduct(ProductKafkaCreateDTO productKafkaCreateDTO) {
+        Product productEntity = productMapper.toEntity(productKafkaCreateDTO);
+        productRepository.save(productEntity);
     }
 
 }
