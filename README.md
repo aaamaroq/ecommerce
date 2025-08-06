@@ -28,6 +28,15 @@ The system uses Apache Kafka for asynchronous communication between microservice
 
 ![ecommerce-api-service diagram](https://uml.planttext.com/plantuml/png/pLPHJzmm37xlhuXusI4ufBsUq8a9s8OO0m7QwsHQNoyZJKgIJZ34VrznBjs5-hJidiRBKUVpP_kptVJ8UR2-QrHHl1DdsgFLuANHeEGl-aUKHYzatLbwAae5ph70OyA9vqBqVtlAbA3m6frHFz5ETiLCV4bC0TQWSr3ZZUbiYOIwMBSKBwzfdSFY7iILDLLNecKJ8aX499bCxupnpbjeRz3sSLqVuyPRgUkGGKjE_XeVEdG-Kdo4qXlxH1cziHq6x_sLtLFeazlBEST7XxVOj0fyg2-nv74TM-onswOMl3UGvkV74vB0u32LteLEGXlzB-z-OEddrCx8zTf7RurIQ4CJuy7nO8yjlF_JNN_LtIdfbcWfLyOUN9B16eqL2L6ZN_bEqgRrfP6qgMbVX9cEW_nQuZMwrcY7fzfB_tIuLd7ucQyqXwgAeHBvqu3imNPXKwNniSJMozv5B45N8yLFu_ddS2gUiqKCV9zGevNbm3F1nvaOdhWInZclytq39IlQxu744US5-gMfFjYwQr3xhyOJSW3npEjlaNOO4rA07w5OlsMM-DzMU5gErsoR9OkfdEc5kJMjBDEts3IPAWQmjwexdUf9c-OyUrl4BkSSWaJVDDiPNyHkEe-znSK9vATUF2TrYOthyNrbFm4FmKKRBnTFfmr8DMZGX-VYyJGnjeO6Hp9BMeGJqok2mLQXAwsayNk3VkY05bJCwCAiuxl9Wkyn0ysG7AyTBqKAonU2JXJekeCQ6NqOxlzHdQWBdmWcDIVodLNq9PAln7WcPQJ8ZV-ozcsb1EXAuEFgmQ82UhijPUkAJSkmytv7JATp-iqPu1dThI2rAxX-feGCOZDTCRgZYUTymmNTENIyItgNR8OU7CoPJkJ0eqBvJb65N70gMNGfk6zH9aGMRc0l2kwkpX6JTHYCFPYktB_W-NkNOoduMM04o46c4XoXhhf65Ry1)
 
+- `ProductController`: Main logic entry point. Handles REST POST/GET requests, validates them, and routes to the corresponding Kafka topic  
+- `KafkaProductPublisher`: Publishes messages to Kafka topics  
+- `KafkaProducerConfig`: Kafka producer configuration  
+- `InternationalizationConfig`: i18n configuration (language setup)  
+- `ProductExceptionHandler`: Handles API-level exceptions gracefully  
+- `ProductCreateRequestDTO`: User request to create a product  
+- `ProductRequestDTO`: User request to retrieve a product  
+- `ProductKafkaCreateDTO`: Kafka message for creating a product  
+- `ProductKafkaDTO`: Kafka message for querying a product  
 
 #### ecommerce-notification-service
 
