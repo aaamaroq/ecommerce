@@ -1,4 +1,4 @@
-package com.ecommerce.service.product.adapter.dto;
+package application.ecommerce.service.product.adapter.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

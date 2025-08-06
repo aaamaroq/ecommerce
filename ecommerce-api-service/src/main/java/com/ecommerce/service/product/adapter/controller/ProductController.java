@@ -78,12 +78,17 @@ public class ProductController {
         log.info("Product requested for create: {}", productCreateRequestDTO);
 
         ProductKafkaCreateDTO productKafkaCreateDTO = new ProductKafkaCreateDTO(
-                productCreateRequestDTO.getName(),
-                productCreateRequestDTO.getPrice(),
-                productCreateRequestDTO.getDescription(),
-                productCreateRequestDTO.getQuantity(),
-                productCreateRequestDTO.getRating()
+                new ProductKafkaCreateDTO.ProductData(
+                        productCreateRequestDTO.getProduct().getName(),
+                        productCreateRequestDTO.getProduct().getPrice(),
+                        productCreateRequestDTO.getProduct().getDescription(),
+                        productCreateRequestDTO.getProduct().getQuantity(),
+                        productCreateRequestDTO.getProduct().getRating()
+                ),
+                productCreateRequestDTO.getNotifyEmail(),
+                locale.toLanguageTag()
         );
+
 
         kafkaProductPublisher.publishProductCreate(productKafkaCreateDTO);
         log.info("Message sent to Kafka for create product: {}", productKafkaCreateDTO);
