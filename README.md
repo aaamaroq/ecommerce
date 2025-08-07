@@ -56,22 +56,85 @@ The system uses Apache Kafka for asynchronous communication between microservice
 - `ProductKafkaDTO`: Product query message  
 
 
-## Testing the Project in local
-To obtain a copy of the project, clone the repository from GitHub:
+### ✅ Testing the App
 
-```bash
-git clone https://github.com/aaamaroq/ecommerce.git
-```
-Use Docker Compose to launch the application services in an isolated environment:
+To test the application, you can use **Postman**, **cURL**, or a web browser (for GET requests). When testing, you'll receive an email response based on the request type:
 
-```bash
-docker-compose up -d
-```
+- **Product Query (GET)**: Retrieves a product by ID and sends details via email  
+- **Product Creation (POST)**: Creates a product and sends confirmation with its ID  
 
-### Testing the App
-To test the application, use any web browser. Enter a product ID, your email, and your name. After submitting, you will receive an email with data for fictional products.
-```bash
-http://localhost:8080/product/getProducto?id=1&nombre=yourname&email=yourmail@mail.com
+The system supports internationalized email responses. Use the `Accept-Language` HTTP header to specify the language (supported values: `en`, `es`, `de`).
+
+#### 🌍 Language Header Example
 ```
 
-This command will start all necessary containers specified in the `docker-compose.yml` file, including the API application, Kafka consumer, and PostgreSQL database.
+Accept-Language: es
+
+```
+
+#### 🔎 GET - Query a Product
+
+You can test with a simple URL in the browser:
+
+```
+
+http://localhost:8080/service/query/product?id=2&name=Adrian&email=adrianamaroquero@gmail.com
+
+```
+
+#### 🛒 POST - Create a Product
+
+Example using `curl`:
+
+```
+
+curl -X POST [http://localhost:8080/products](http://localhost:8080/products)&#x20;
+-H "Content-Type: application/json"&#x20;
+-H "Accept-Language: en"&#x20;
+-d '{
+"product": {
+"name": "Cotton T-shirt",
+"price": 25.99,
+"description": "Unisex T-shirt made of 100% organic cotton",
+"quantity": 100,
+"rating": 4.5
+},
+"notifyEmail": "[customer@email.com](mailto:customer@email.com)"
+}'
+
+```
+
+
+#### 🚀 Running the App
+
+Start all necessary services with Docker Compose:
+
+```
+
+docker-compose up
+
+```
+
+This will launch:
+
+- `ecommerce-api-service`  
+- `ecommerce-notification-service`  
+- `Apache Kafka`  
+- `PostgreSQL`
+
+
+#### 📥 Postman Collection
+
+You can also import and run tests using this Postman collection:  
+[Ecommerce.collection.postman_collection.json](https://github.com/user-attachments/files/21671627/Ecommerce.collection.postman_collection.json)
+
+
+#### ✉️ Email Result Examples
+
+- 📬 **Product Creation Email**  
+  <img width="400" height="120" alt="image" src="https://github.com/user-attachments/assets/552b5297-d082-4d71-8b79-d020ba6d3330" />
+
+
+- 📬 **Product Query Email**  
+  <img width="400" height="230" alt="image" src="https://github.com/user-attachments/assets/131882cd-fa8a-48ad-9ac3-05c0492145c0" />
+
