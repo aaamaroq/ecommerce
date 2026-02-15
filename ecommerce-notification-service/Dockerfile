@@ -1,5 +1,5 @@
-# Usa una imagen base de OpenJDK para Java 17
-FROM openjdk:17-jdk-alpine
+# Usa una imagen base de Eclipse Temurin para Java 21
+FROM eclipse-temurin:21-jdk-alpine
 
 # Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app

@@ -17,6 +17,10 @@ import org.springframework.stereotype.Service;
 import java.util.Locale;
 import java.util.Set;
 
+/**
+ * Listener for Kafka messages related to products.
+ * Consumes messages for product retrieval and creation, and notifies users via email.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -31,6 +35,11 @@ public class ProductKafkaListener {
 
 
 
+    /**
+     * Consumes a product request message and sends product details via email.
+     * 
+     * @param productKafkaDTO the product request information
+     */
     @KafkaListener(
             topics = "${spring.kafka.topic.request-info}",
             containerFactory = "productKafkaDTOKafkaListenerContainerFactory"
@@ -43,31 +52,36 @@ public class ProductKafkaListener {
         }
 
         log.info("Received product request: {}", productKafkaDTO);
-        Locale locale = resolveLocale(productKafkaDTO.getLanguage());
-        String FormattedMessage;
+        Locale locale = resolveLocale(productKafkaDTO.language());
+        String formattedMessage;
 
         try {
-            ProductResponseDTO productResponseDTO = productService.getProductResponseById(productKafkaDTO.getProductId());
+            ProductResponseDTO productResponseDTO = productService.getProductResponseById(productKafkaDTO.productId());
             log.debug("Fetched product response: {}", productResponseDTO);
-            FormattedMessage = productDetailsFormatter.formatProductFoundMessage(productResponseDTO, locale);
-            log.debug("Formatted product details: {}", FormattedMessage);
+            formattedMessage = productDetailsFormatter.formatProductFoundMessage(productResponseDTO, locale);
+            log.debug("Formatted product details: {}", formattedMessage);
 
         } catch (ProductNotFoundException ex) {
-            log.warn("Product not found for ID: {}", productKafkaDTO.getProductId(), ex);
+            log.warn("Product not found for ID: {}", productKafkaDTO.productId(), ex);
             String notFoundMessage = messageSource.getMessage("product.not.found", null, locale);
-            FormattedMessage = productDetailsFormatter.formatFailedMessage(notFoundMessage);
+            formattedMessage = productDetailsFormatter.formatFailedMessage(notFoundMessage);
         }
 
         try {
             String subject = messageSource.getMessage("email.subject.request", null, locale);
-            emailNotifier.send(productKafkaDTO.getEmail(), subject, FormattedMessage);
-            log.info("Sent product details email to: {}", productKafkaDTO.getEmail());
+            emailNotifier.send(productKafkaDTO.email(), subject, formattedMessage);
+            log.info("Sent product details email to: {}", productKafkaDTO.email());
         } catch (Exception ex) {
-            log.error("Failed to send email to: {} {}", productKafkaDTO.getEmail(), ex.getMessage());
+            log.error("Failed to send email to: {} {}", productKafkaDTO.email(), ex.getMessage());
         }
 
     }
 
+    /**
+     * Consumes a product creation message, saves the product, and sends a confirmation email.
+     * 
+     * @param productKafkaCreateDTO the product creation information
+     */
     @KafkaListener(
             topics = "${spring.kafka.topic.product-create}",
             containerFactory = "productKafkaCreateDTOKafkaListenerContainerFactory"
@@ -81,10 +95,10 @@ public class ProductKafkaListener {
 
         log.info("Received product create request: {}", productKafkaCreateDTO);
 
-        ProductKafkaCreateDTO.ProductData productData = productKafkaCreateDTO.getProduct();
-        Locale locale = resolveLocale(productKafkaCreateDTO.getLanguage());
-        String email = productKafkaCreateDTO.getNotifyEmail();
-        String FormattedMessage = "";
+        ProductKafkaCreateDTO.ProductData productData = productKafkaCreateDTO.product();
+        Locale locale = resolveLocale(productKafkaCreateDTO.language());
+        String email = productKafkaCreateDTO.notifyEmail();
+        String formattedMessage = "";
         Long idProductSaved;
         String subject;
 
@@ -92,22 +106,22 @@ public class ProductKafkaListener {
 
             idProductSaved = productService.saveProduct(productData);
 
-            log.info("Product saved successfully: {}", productData.getName());
+            log.info("Product saved successfully: {}", productData.name());
 
             subject = messageSource.getMessage("email.product.create", null, locale);
-            FormattedMessage = productDetailsFormatter.formatProductAddedMessage(idProductSaved, locale);
+            formattedMessage = productDetailsFormatter.formatProductAddedMessage(idProductSaved, locale);
 
         } catch (Exception ex) {
-            log.error("Error saving product: {} - {}", productData.getName(), ex.getMessage(), ex);
+            log.error("Error saving product: {} - {}", productData.name(), ex.getMessage(), ex);
 
             subject = messageSource.getMessage("email.product.not.create", null, locale);
             String errorMessage = messageSource.getMessage("email.product.internal.error", null, locale);
-            FormattedMessage = productDetailsFormatter.formatFailedMessage(errorMessage);
+            formattedMessage = productDetailsFormatter.formatFailedMessage(errorMessage);
 
         }
 
         try {
-            emailNotifier.send(email, subject, FormattedMessage);
+            emailNotifier.send(email, subject, formattedMessage);
             log.info("Sent product details email to: {}", email);
         } catch (Exception ex) {
             log.error("Failed to send email to: {} {}", email, ex.getMessage());
@@ -117,14 +131,15 @@ public class ProductKafkaListener {
 
 
     private Locale resolveLocale(String language) {
-        Set<String> supportedLanguages = Set.of("en", "es", "de");
-
-        if (supportedLanguages.contains(language)) {
-            return Locale.forLanguageTag(language);
-        }
-
-        log.warn("Unsupported language '{}'. Falling back to English.", language);
-        return Locale.ENGLISH;
+        return switch (language != null ? language : "") {
+            case "en" -> Locale.ENGLISH;
+            case "es" -> Locale.forLanguageTag("es");
+            case "de" -> Locale.GERMAN;
+            default -> {
+                log.warn("Unsupported language '{}'. Falling back to English.", language);
+                yield Locale.ENGLISH;
+            }
+        };
     }
 }
 

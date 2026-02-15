@@ -19,6 +19,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Controller for handling product-related API requests.
+ * Modernized to use Java Records for DTOs and optimized for Virtual Threads.
+ */
 @Slf4j
 @RestController
 @RequestMapping("/service/query")
@@ -34,6 +38,13 @@ public class ProductController {
         this.messageSource = messageSource;
     }
 
+    /**
+     * Retrieves product information and publishes a request message to Kafka.
+     * 
+     * @param productRequestDTO the request details
+     * @param locale the current locale for internationalized messages
+     * @return a response entity confirming the request was sent
+     */
     @GetMapping("/product")
     @Operation(
             summary = "Get a product",
@@ -45,9 +56,9 @@ public class ProductController {
     ) {
 
         ProductKafkaDTO productKafkaDTO = new ProductKafkaDTO(
-                productRequestDTO.getName(),
-                productRequestDTO.getEmail(),
-                productRequestDTO.getId(),
+                productRequestDTO.name(),
+                productRequestDTO.email(),
+                productRequestDTO.id(),
                 locale.toLanguageTag()
         );
 
@@ -64,6 +75,13 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    /**
+     * Accepts a product creation request and publishes it to Kafka.
+     * 
+     * @param productCreateRequestDTO the product data and notification email
+     * @param locale the current locale for internationalized messages
+     * @return a response entity confirming the creation request was sent
+     */
     @PostMapping("/product")
     @Operation(
             summary = "Add a product",
@@ -79,13 +97,13 @@ public class ProductController {
 
         ProductKafkaCreateDTO productKafkaCreateDTO = new ProductKafkaCreateDTO(
                 new ProductKafkaCreateDTO.ProductData(
-                        productCreateRequestDTO.getProduct().getName(),
-                        productCreateRequestDTO.getProduct().getPrice(),
-                        productCreateRequestDTO.getProduct().getDescription(),
-                        productCreateRequestDTO.getProduct().getQuantity(),
-                        productCreateRequestDTO.getProduct().getRating()
+                        productCreateRequestDTO.product().name(),
+                        productCreateRequestDTO.product().price(),
+                        productCreateRequestDTO.product().description(),
+                        productCreateRequestDTO.product().quantity(),
+                        productCreateRequestDTO.product().rating()
                 ),
-                productCreateRequestDTO.getNotifyEmail(),
+                productCreateRequestDTO.notifyEmail(),
                 locale.toLanguageTag()
         );
 
