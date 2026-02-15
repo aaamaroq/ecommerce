@@ -17,6 +17,10 @@ import org.springframework.stereotype.Service;
 import java.util.Locale;
 import java.util.Set;
 
+/**
+ * Listener for Kafka messages related to products.
+ * Consumes messages for product retrieval and creation, and notifies users via email.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -31,6 +35,11 @@ public class ProductKafkaListener {
 
 
 
+    /**
+     * Consumes a product request message and sends product details via email.
+     * 
+     * @param productKafkaDTO the product request information
+     */
     @KafkaListener(
             topics = "${spring.kafka.topic.request-info}",
             containerFactory = "productKafkaDTOKafkaListenerContainerFactory"
@@ -68,6 +77,11 @@ public class ProductKafkaListener {
 
     }
 
+    /**
+     * Consumes a product creation message, saves the product, and sends a confirmation email.
+     * 
+     * @param productKafkaCreateDTO the product creation information
+     */
     @KafkaListener(
             topics = "${spring.kafka.topic.product-create}",
             containerFactory = "productKafkaCreateDTOKafkaListenerContainerFactory"
