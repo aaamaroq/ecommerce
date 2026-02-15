@@ -81,8 +81,8 @@ public class ProductKafkaListener {
 
         log.info("Received product create request: {}", productKafkaCreateDTO);
 
-        ProductKafkaCreateDTO.ProductData productData = productKafkaCreateDTO.getProduct();
-        Locale locale = resolveLocale(productKafkaCreateDTO.getLanguage());
+        ProductKafkaCreateDTO.ProductData productData = productKafkaCreateDTO.product();
+        Locale locale = resolveLocale(productKafkaCreateDTO.language());
         String email = productKafkaCreateDTO.notifyEmail();
         String formattedMessage = "";
         Long idProductSaved;
@@ -92,17 +92,17 @@ public class ProductKafkaListener {
 
             idProductSaved = productService.saveProduct(productData);
 
-            log.info("Product saved successfully: {}", productData.getName());
+            log.info("Product saved successfully: {}", productData.name());
 
             subject = messageSource.getMessage("email.product.create", null, locale);
-            FormattedMessage = productDetailsFormatter.formatProductAddedMessage(idProductSaved, locale);
+            formattedMessage = productDetailsFormatter.formatProductAddedMessage(idProductSaved, locale);
 
         } catch (Exception ex) {
             log.error("Error saving product: {} - {}", productData.name(), ex.getMessage(), ex);
 
             subject = messageSource.getMessage("email.product.not.create", null, locale);
             String errorMessage = messageSource.getMessage("email.product.internal.error", null, locale);
-            FormattedMessage = productDetailsFormatter.formatFailedMessage(errorMessage);
+            formattedMessage = productDetailsFormatter.formatFailedMessage(errorMessage);
 
         }
 
