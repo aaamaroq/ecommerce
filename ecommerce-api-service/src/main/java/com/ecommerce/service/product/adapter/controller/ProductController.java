@@ -45,9 +45,9 @@ public class ProductController {
     ) {
 
         ProductKafkaDTO productKafkaDTO = new ProductKafkaDTO(
-                productRequestDTO.getName(),
-                productRequestDTO.getEmail(),
-                productRequestDTO.getId(),
+                productRequestDTO.name(),
+                productRequestDTO.email(),
+                productRequestDTO.id(),
                 locale.toLanguageTag()
         );
 
@@ -79,13 +79,13 @@ public class ProductController {
 
         ProductKafkaCreateDTO productKafkaCreateDTO = new ProductKafkaCreateDTO(
                 new ProductKafkaCreateDTO.ProductData(
-                        productCreateRequestDTO.getProduct().getName(),
-                        productCreateRequestDTO.getProduct().getPrice(),
-                        productCreateRequestDTO.getProduct().getDescription(),
-                        productCreateRequestDTO.getProduct().getQuantity(),
-                        productCreateRequestDTO.getProduct().getRating()
+                        productCreateRequestDTO.product().name(),
+                        productCreateRequestDTO.product().price(),
+                        productCreateRequestDTO.product().description(),
+                        productCreateRequestDTO.product().quantity(),
+                        productCreateRequestDTO.product().rating()
                 ),
-                productCreateRequestDTO.getNotifyEmail(),
+                productCreateRequestDTO.notifyEmail(),
                 locale.toLanguageTag()
         );
 
