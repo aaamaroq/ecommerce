@@ -98,7 +98,7 @@ public class ProductKafkaListener {
             FormattedMessage = productDetailsFormatter.formatProductAddedMessage(idProductSaved, locale);
 
         } catch (Exception ex) {
-            log.error("Error saving product: {} - {}", productData.getName(), ex.getMessage(), ex);
+            log.error("Error saving product: {} - {}", productData.name(), ex.getMessage(), ex);
 
             subject = messageSource.getMessage("email.product.not.create", null, locale);
             String errorMessage = messageSource.getMessage("email.product.internal.error", null, locale);

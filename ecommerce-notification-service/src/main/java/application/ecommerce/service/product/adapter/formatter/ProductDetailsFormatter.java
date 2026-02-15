@@ -27,24 +27,24 @@ public class ProductDetailsFormatter {
                 "<table style='border-collapse: collapse; width: 100%; max-width: 600px;'>" +
                 "  <tr style='background-color: #f4f4f4;'>" +
                 "    <th style='padding: 8px; border: 1px solid #ddd; text-align: left;'>" + nameLabel + "</th>" +
-                "    <td style='padding: 8px; border: 1px solid #ddd;'>" + product.getName() + "</td>" +
+                "    <td style='padding: 8px; border: 1px solid #ddd;'>" + product.name() + "</td>" +
                 "  </tr>" +
                 "  <tr>" +
                 "    <th style='padding: 8px; border: 1px solid #ddd; text-align: left;'>" + priceLabel + "</th>" +
-                "    <td style='padding: 8px; border: 1px solid #ddd;'>" + product.getPrice() + " $</td>" +
+                "    <td style='padding: 8px; border: 1px solid #ddd;'>" + product.price() + " $</td>" +
                 "  </tr>" +
                 "  <tr style='background-color: #f4f4f4;'>" +
                 "    <th style='padding: 8px; border: 1px solid #ddd; text-align: left;'>" + descriptionLabel + "</th>"
                 +
-                "    <td style='padding: 8px; border: 1px solid #ddd;'>" + product.getDescription() + "</td>" +
+                "    <td style='padding: 8px; border: 1px solid #ddd;'>" + product.description() + "</td>" +
                 "  </tr>" +
                 "  <tr>" +
                 "    <th style='padding: 8px; border: 1px solid #ddd; text-align: left;'>" + quantityLabel + "</th>" +
-                "    <td style='padding: 8px; border: 1px solid #ddd;'>" + product.getQuantity() + "</td>" +
+                "    <td style='padding: 8px; border: 1px solid #ddd;'>" + product.quantity() + "</td>" +
                 "  </tr>" +
                 "  <tr style='background-color: #f4f4f4;'>" +
                 "    <th style='padding: 8px; border: 1px solid #ddd; text-align: left;'>" + ratingLabel + "</th>" +
-                "    <td style='padding: 8px; border: 1px solid #ddd;'>" + product.getRating() + "</td>" +
+                "    <td style='padding: 8px; border: 1px solid #ddd;'>" + product.rating() + "</td>" +
                 "  </tr>" +
                 "</table>" +
                 "</body>" +
