@@ -44,23 +44,23 @@ public class ProductKafkaListener {
 
         log.info("Received product request: {}", productKafkaDTO);
         Locale locale = resolveLocale(productKafkaDTO.language());
-        String FormattedMessage;
+        String formattedMessage;
 
         try {
             ProductResponseDTO productResponseDTO = productService.getProductResponseById(productKafkaDTO.productId());
             log.debug("Fetched product response: {}", productResponseDTO);
-            FormattedMessage = productDetailsFormatter.formatProductFoundMessage(productResponseDTO, locale);
-            log.debug("Formatted product details: {}", FormattedMessage);
+            formattedMessage = productDetailsFormatter.formatProductFoundMessage(productResponseDTO, locale);
+            log.debug("Formatted product details: {}", formattedMessage);
 
         } catch (ProductNotFoundException ex) {
             log.warn("Product not found for ID: {}", productKafkaDTO.productId(), ex);
             String notFoundMessage = messageSource.getMessage("product.not.found", null, locale);
-            FormattedMessage = productDetailsFormatter.formatFailedMessage(notFoundMessage);
+            formattedMessage = productDetailsFormatter.formatFailedMessage(notFoundMessage);
         }
 
         try {
             String subject = messageSource.getMessage("email.subject.request", null, locale);
-            emailNotifier.send(productKafkaDTO.email(), subject, FormattedMessage);
+            emailNotifier.send(productKafkaDTO.email(), subject, formattedMessage);
             log.info("Sent product details email to: {}", productKafkaDTO.email());
         } catch (Exception ex) {
             log.error("Failed to send email to: {} {}", productKafkaDTO.email(), ex.getMessage());
@@ -83,8 +83,8 @@ public class ProductKafkaListener {
 
         ProductKafkaCreateDTO.ProductData productData = productKafkaCreateDTO.getProduct();
         Locale locale = resolveLocale(productKafkaCreateDTO.getLanguage());
-        String email = productKafkaCreateDTO.getNotifyEmail();
-        String FormattedMessage = "";
+        String email = productKafkaCreateDTO.notifyEmail();
+        String formattedMessage = "";
         Long idProductSaved;
         String subject;
 
@@ -107,7 +107,7 @@ public class ProductKafkaListener {
         }
 
         try {
-            emailNotifier.send(email, subject, FormattedMessage);
+            emailNotifier.send(email, subject, formattedMessage);
             log.info("Sent product details email to: {}", email);
         } catch (Exception ex) {
             log.error("Failed to send email to: {} {}", email, ex.getMessage());
@@ -117,14 +117,15 @@ public class ProductKafkaListener {
 
 
     private Locale resolveLocale(String language) {
-        Set<String> supportedLanguages = Set.of("en", "es", "de");
-
-        if (supportedLanguages.contains(language)) {
-            return Locale.forLanguageTag(language);
-        }
-
-        log.warn("Unsupported language '{}'. Falling back to English.", language);
-        return Locale.ENGLISH;
+        return switch (language != null ? language : "") {
+            case "en" -> Locale.ENGLISH;
+            case "es" -> Locale.forLanguageTag("es");
+            case "de" -> Locale.GERMAN;
+            default -> {
+                log.warn("Unsupported language '{}'. Falling back to English.", language);
+                yield Locale.ENGLISH;
+            }
+        };
     }
 }
 
