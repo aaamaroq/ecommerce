@@ -57,22 +57,26 @@ classDiagram
         +publishProductRequest(ProductKafkaDTO)
         +publishProductCreate(ProductKafkaCreateDTO)
     }
-    class ProductRequestDTO <<record>> {
+    class ProductRequestDTO {
+        <<record>>
         +Long id
         +String name
         +String email
     }
-    class ProductCreateRequestDTO <<record>> {
+    class ProductCreateRequestDTO {
+        <<record>>
         +ProductData product
         +String notifyEmail
     }
-    class ProductKafkaDTO <<record>> {
+    class ProductKafkaDTO {
+        <<record>>
         +String name
         +String email
         +Long productId
         +String language
     }
-    class ProductKafkaCreateDTO <<record>> {
+    class ProductKafkaCreateDTO {
+        <<record>>
         +ProductData product
         +String notifyEmail
         +String language
@@ -112,7 +116,8 @@ classDiagram
         +getProductResponseById(Long) ProductResponseDTO
         +saveProduct(ProductData) Long
     }
-    class ProductRepository <<interface>> {
+    class ProductRepository {
+        <<interface>>
         +findById(Long)
         +save(Product)
     }
@@ -126,7 +131,8 @@ classDiagram
         +formatFailedMessage(String) String
         +formatProductAddedMessage(Long, Locale) String
     }
-    class Product <<Entity>> {
+    class Product {
+        <<Entity>>
         +Long id
         +String name
         +BigDecimal price
