@@ -1,3 +1,6 @@
+![Java Version](https://img.shields.io/badge/Java-21-orange?logo=openjdk)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.0-brightgreen?logo=springboot)
+![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)
 
 # Ecommerce Backend
 
@@ -9,14 +12,10 @@ This project consists of two Spring Boot microservices for an e-commerce platfor
 - **ecommerce-api-service:** Exposes REST endpoints to handle product-related requests (GET and POST). It does not directly process business logic but publishes messages to Kafka topics (`product-requests` for product request and `product-creates` for product creations).
 - **ecommerce-notification-service:** Consumes messages from Kafka topics, processes the requests by interacting with a PostgreSQL database, and sends email notifications to users with the result of their requests. Emails are sent in the user's preferred language (i18n supported languages: Spanish, English, and German).
 The system uses Apache Kafka for asynchronous communication between microservices and is deployed using Docker Compose.
-<br>
-<p align="center">
-  <img src="https://img.plantuml.biz/plantuml/png/dPHDSzem48RlcSb_s789p02-zDHJ-Ce79HCNcqDEZ2nlG8CikP8S9jFfV-zAjWaaJARjoMRbtVVPtHTTMyUCgmfvUV55A2wh72iZOUjSQRz5aM7xuKQuRPLL5WtNog5oGwwBg9HC-Ro1TRaKMJJvEeXzQFMmY0fc7HeAhIUKmOH2Coo3nkN5OlJqk4hNYzbDkbxUtzwbtPuFnsYiLbslqeVEYXuTUYQeSWktinIOoY5-J58m-BD2womu3MwBC8hlEw52yagYnNgiAvKpyzf5eYo86QdEh7s7-gjE3txv7803O9UL8a7p8aB28Nb0uO6juu6eD49jOAoryp-NCq8Y14-p9KQ9K1gTLzm1OHg1Df1pWym9hUmGuYgJmcxfe41hsGP39z_PyuxHIocu7Vf-ZicKTk9Py53X7EBn-IUiLD1M97eYrlUyd4WeBlL6y3u8Mh9Xd4Qyfyt3TDmFFTYm2ooOa1yGfratpqWYrjPj32O_5c4uA0CJap1bZcNCrbXE6r9hvvJJqVkETvwGFXsLZDEE0x1FVQX71cEZTxL3RXWNKZZcgA8VIAMQGK26Re-ee13Sw6OgrWlzzfidjiPi9ti_62uwCPjNkalJsAVxpEESblLjiTwPVhXmrVGuQEjSGTURkMsz3VUEjbNt-fywmMVePGB-N-kSTLWhUF1DxPXpNNb_V83u9x5WdoMolFx3x8rmxpr27ypZKJIVZYUVbchkaEJDht3yNLZcdBsmvemkBqFtHNs9N5DIkAZ-0000" alt="Architecture diagram" />
-</p>
 
-### 🛠️ Technologies to Use
-
-- **Languages & Frameworks:** Java 17, Spring Boot (Data, Kafka, Web), Hibernate, JPA  
+### 🛠️ Technologies
+- **Languages & Frameworks:** Java 21, Spring Boot 3.5.0 (Data, Kafka, Web), Hibernate, JPA  
+- **Modern Features:** Java Records (for DTOs), Virtual Threads (for scalability)
 - **Architecture & Design:** DDD, REST APIs, SOLID, Clean Code  
 - **Database & Migrations:** PostgreSQL, Flyway  
 - **DevOps & Infrastructure:** Docker, Docker Compose, Git  
