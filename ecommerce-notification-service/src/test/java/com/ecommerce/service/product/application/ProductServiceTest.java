@@ -37,7 +37,7 @@ class ProductServiceTest {
         Product product = new Product();
         product.setId(productId);
 
-        ProductResponseDTO productResponseDTO = new ProductResponseDTO();
+        ProductResponseDTO productResponseDTO = new ProductResponseDTO("Test", java.math.BigDecimal.TEN, 10, "Desc", java.math.BigDecimal.valueOf(4.5));
 
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
         when(productMapper.toResponse(product)).thenReturn(productResponseDTO);
@@ -54,7 +54,7 @@ class ProductServiceTest {
 
     @Test
     void saveProduct_shouldReturnId_whenProductSaved() {
-        ProductKafkaCreateDTO.ProductData productData = new ProductKafkaCreateDTO.ProductData();
+        ProductKafkaCreateDTO.ProductData productData = new ProductKafkaCreateDTO.ProductData("Test", 10.0, "Desc", 10, 4.5);
         Product productEntity = new Product();
         Product savedProduct = new Product();
         savedProduct.setId(10L);
